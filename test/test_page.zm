@@ -213,10 +213,6 @@ Page test_page
     {
         test_page_overlay.setup(this);
 
-        // Show or hide prompt.
-        test_page_overlay.show_prompt(pr ?
-            "name each object" : "");
-
         // Enable or disable the progress bar.
         test_page_overlay.show_progress_bar(ntrials);   // disabled if < 0
 
