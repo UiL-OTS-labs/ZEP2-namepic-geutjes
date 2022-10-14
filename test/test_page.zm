@@ -111,14 +111,19 @@ Page test_page
         time start_stimulus(time t)
         {
             // Prepare stimulus presentation object.
-            canvas.stimulus.load(stimuli_dir() + "images/" + item.imgfn);
+            canvas.stimulus.load(item.imgfn);
 
-            // Start fixation cross.
-            canvas.fixation.start(t, FIXATION_DURATION);
-            time fixoffset = canvas.fixation.expected_finish_time;
+	    if (item.type == INSTRUCTION) {
+		canvas.stimulus.start(t);
+	    }
+	    else {
+		// Start fixation cross.
+		canvas.fixation.start(t, FIXATION_DURATION);
+		time fixoffset = canvas.fixation.expected_finish_time;
 
-            // Start stimulus at fixation offset.
-            canvas.stimulus.start(fixoffset, STIMULUS_DURATION);
+		// Start stimulus at fixation offset.
+		canvas.stimulus.start(fixoffset, STIMULUS_DURATION);
+	    }
 
             // Return stimulus onset time.
             return canvas.stimulus.expected_start_time;
@@ -246,8 +251,13 @@ Page test_page
         item = it;
 
 
+	time t = tref;
+	if (item.type != INSTRUCTION) {
+	    t = t + INTERTRIAL_INTERVAL;
+	}
+
         // Show this page (if not yet done) and make tref the trial start time.
-        tref = test_window1.show_test_page(this, tref + INTERTRIAL_INTERVAL);
+        tref = test_window1.show_test_page(this, t);
 
 
         // Reset response data.
@@ -258,13 +268,17 @@ Page test_page
         time stimonset = layout.start_stimulus(tref);
 
 
-        // Start beep at stimulus onset.
-        beeper.play(stimonset);
+	if (item.type == INSTRUCTION) {
+	    response.start(stimonset);
+	}
+	else {
+	    // Start beep at stimulus onset.
+	    beeper.play(stimonset);
 
-
-        // Response interval starts at stimulus onset. Timeout after
-        // RESPONSE_DURATION unless this duration is 0s or less.
-        response.start(stimonset, RESPONSE_DURATION);
+	    // Response interval starts at stimulus onset. Timeout after
+	    // RESPONSE_DURATION unless this duration is 0s or less.
+	    response.start(stimonset, RESPONSE_DURATION);
+	}
 
 
         // Update progress counter (if enabled).
