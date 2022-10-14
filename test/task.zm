@@ -35,6 +35,7 @@ import std_sound_capture;
 
 import defs;
 import stimuli;
+import namen;
 import shuffle;
 import output;
 import test_page;
@@ -42,29 +43,35 @@ import test_page;
 
 Block task
 {
-    Part instructions
+    Block instructions
     {
+        TestItem        item;   // current item
+
+
         on_event:entry()
         {
-//            pause_page.set_text_size(1000, 600);
-            pause_page.set_text(
-                "<b>Dear participant,</b>\n"
-                "\n"
-                "Thank you for participating in this experiment.\n"
-                "\n"
-                "You are now going to see pictures on the screen, one after "
-                "the other. Your task is to name each pictured object as "
-                "quickly as possible. Try to make no mistakes.\n"
-                "\n"
-                "First we will do a short practice.\n"
-                "\n"
-                "<i>Hit Enter when ready to start.</i>",
-                true);
+            num_cycles = namen_instructions.size;
 
-            pause_page.action(this);
+            // Prepare test page: progress bar and prompt enabled.
+            test_page.setup(num_cycles, false);
+        }
+
+
+        on_event:exit()
+        {
+            test_page.cleanup();
+        }
+
+
+        Trial trial
+        {
+            on_event:entry()
+            {
+                item = namen_instructions[instructions.cycle];
+                test_page.action(this, item, reference_time, instructions.cycle);
+            }
         }
     }
-
 
     Block practice
     {
@@ -73,7 +80,7 @@ Block task
 
         on_event:entry()
         {
-            num_cycles = prac_items.size;
+            num_cycles = namen_prac_items.size;
 
             // Prepare test page: progress bar and prompt enabled.
             test_page.setup(num_cycles, true);
@@ -90,7 +97,7 @@ Block task
         {
             on_event:entry()
             {
-                item = prac_items[practice.cycle];
+                item = namen_prac_items[practice.cycle];
 
                 test_page.action(this, item, reference_time, practice.cycle);
             }
@@ -136,7 +143,7 @@ Block task
             // Randomize test item table.
             if (shuffle_test_items() != OK) terminate;
 
-            num_cycles = test_items.size;
+            num_cycles = namen_test_items.size;
 //            num_cycles = 3;
 
             // Prepare test page: progress bar enabled, prompt disabled.
@@ -161,7 +168,7 @@ Block task
         {
             on_event:entry()
             {
-                item = test_items[test.cycle];
+                item = namen_test_items[test.cycle];
 
 		string fn = dir + "ses-" +
 		    format(expdb.session.id, 4) + "-" +
