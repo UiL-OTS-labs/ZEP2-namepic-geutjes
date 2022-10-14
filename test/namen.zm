@@ -1,0 +1,25 @@
+TestItem[] namen_instructions =
+{
+	{1, INSTRUCTION, "instructie_namen/1.png"},
+	{2, INSTRUCTION, "instructie_namen/2.png"},
+	{3, INSTRUCTION, "instructie_namen/3.png"},
+	{4, INSTRUCTION, "instructie_namen/4.png"},
+	{5, INSTRUCTION, "instructie_namen/5.png"},
+	{6, INSTRUCTION, "instructie_namen/6.png"},
+	{7, INSTRUCTION, "instructie_namen/7.png"},
+}
+
+TestItem[] namen_prac_items =
+{
+	{1, INSTRUCTION, "oefenopgaven_namen/1.png"},
+	{2, FILLER, "oefenopgaven_namen/2.png"},
+	{3, FILLER, "oefenopgaven_namen/3.png"},
+	{4, FILLER, "oefenopgaven_namen/4.png"},
+	{5, FILLER, "oefenopgaven_namen/5.png"},
+	{6, FILLER, "oefenopgaven_namen/6.png"},
+	{7, FILLER, "oefenopgaven_namen/7.png"},
+}
+
+TestItem[] namen_test_items =
+{
+}
