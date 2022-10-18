@@ -72,7 +72,37 @@ Experiment experiment
     {
         on_event:entry()
         {
-            test::action(this);
+	    if (selected_group == LIST1) {
+		test::action(this, 0);
+	    }
+	    else {
+		test::action(this, 1);
+	    }
+        }
+    }
+
+    Part pause
+    {
+        on_event:entry()
+        {
+            pause_page.set_text(
+                "<i>Hit Enter when ready to proceed.</i>",
+                true);
+
+            pause_page.action(this);
+        }
+    }
+
+    Part phase2
+    {
+        on_event:entry()
+        {
+	    if (selected_group == LIST1) {
+		test::action(this, 1);
+	    }
+	    else {
+		test::action(this, 0);
+	    }
         }
     }
 
