@@ -25,12 +25,30 @@ enum ItemType
     INSTRUCTION,
 }
 
+enum NameOrder
+{
+    NC, // for filler items
+    
+    BDV,
+    BVD,
+    DBV,
+    DHZ,
+    DVB,
+    DZH,
+    HDZ,
+    HZD,
+    VBD,
+    VDB,
+    ZDH,
+    ZHD,
+}
 
 // Item table record.
 record TestItem
 {
     int         id;             // item id
     ItemType    type;           // item type
+    NameOrder   order;
     string      imgfn;          // stimulus filename
 }
 
