@@ -35,11 +35,18 @@ import std_sound_capture;
 
 import defs;
 import stimuli;
+
 import namen;
+import zinnen;
+
 import shuffle;
 import output;
 import test_page;
 
+
+TestItem[] instruction_items;
+TestItem[] prac_items;
+TestItem[] test_items;
 
 Block task
 {
@@ -50,7 +57,7 @@ Block task
 
         on_event:entry()
         {
-            num_cycles = namen_instructions.size;
+            num_cycles = instruction_items.size;
 
             // Prepare test page: progress bar and prompt enabled.
             test_page.setup(num_cycles, false);
@@ -67,7 +74,7 @@ Block task
         {
             on_event:entry()
             {
-                item = namen_instructions[instructions.cycle];
+                item = instruction_items[instructions.cycle];
                 test_page.action(this, item, reference_time, instructions.cycle);
             }
         }
@@ -80,7 +87,7 @@ Block task
 
         on_event:entry()
         {
-            num_cycles = namen_prac_items.size;
+            num_cycles = prac_items.size;
 
             // Prepare test page: progress bar and prompt enabled.
             test_page.setup(num_cycles, true);
@@ -97,7 +104,7 @@ Block task
         {
             on_event:entry()
             {
-                item = namen_prac_items[practice.cycle];
+                item = prac_items[practice.cycle];
 
                 test_page.action(this, item, reference_time, practice.cycle);
             }
@@ -131,7 +138,6 @@ Block task
         }
     }
 
-
     Block test
     {
         TestItem        item;   // current item
@@ -141,10 +147,10 @@ Block task
         on_event:entry()
         {
             // Randomize test item table.
-            if (shuffle_test_items() != OK) terminate;
+            if (shuffle_test_items(test_items) != OK) terminate;
 
-            num_cycles = namen_test_items.size;
-//            num_cycles = 3;
+            num_cycles = test_items.size;
+           /* num_cycles = 3; */
 
             // Prepare test page: progress bar enabled, prompt disabled.
             test_page.setup(num_cycles, false);
@@ -157,9 +163,7 @@ Block task
 
         on_event:exit()
         {
-
             test_page.cleanup();
-
             save_trial_data();
         }
 
@@ -168,7 +172,7 @@ Block task
         {
             on_event:entry()
             {
-                item = namen_test_items[test.cycle];
+                item = test_items[test.cycle];
 
 		string fn = dir + "ses-" +
 		    format(expdb.session.id, 4) + "-" +
@@ -205,9 +209,21 @@ Block task
 }
 
 
-void action(Part caller)
+void action(Part caller, int phase)
 {
     // Activate the task. When the task is done, the registered caller
     // (c.q. the main experiment object) will automatically be signalled.
+
+    if (phase == 0) {
+	instruction_items = namen_instructions;
+	prac_items = namen_prac_items;
+	test_items = namen_test_items;
+    }
+    else {
+	instruction_items = zinnen_instructions;
+	prac_items = zinnen_prac_items;
+	test_items = zinnen_test_items;
+    }
+
     task.enter(caller);
 }
