@@ -1,0 +1,7 @@
+zeppackage: 1
+experiment: namepic
+title: Picture Naming
+author: Theo Veenker <theo.veenker@beexy.nl>
+license: GNU GPL
+multiscript: 0
+zepversion: 2.5
