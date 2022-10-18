@@ -1,0 +1,21 @@
+
+// Symbolic definition of groups.
+// Since each group corresponds to a list, we call them lists
+enum TestGroup
+{
+    LIST1,
+    LIST2
+}
+
+
+// Assigns participant to a group.
+int assign_participant_to_group()
+{
+    // The group to assign to depends on the numerical part in the 
+    // participant-id. If the participant-id has no numerical part a
+    // group will be selected at random.
+    if (select_group_from_participant_id() != OK)
+        select_group_random();
+    
+    return OK;
+}
