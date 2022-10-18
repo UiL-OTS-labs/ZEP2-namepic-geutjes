@@ -111,7 +111,7 @@ Page test_page
         time start_stimulus(time t)
         {
             // Prepare stimulus presentation object.
-            canvas.stimulus.load(item.imgfn);
+            canvas.stimulus.load(stimuli_dir() + item.imgfn);
 
 	    if (item.type == INSTRUCTION) {
 		canvas.stimulus.start(t);
