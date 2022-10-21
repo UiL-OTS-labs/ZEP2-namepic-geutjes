@@ -25,5 +25,4 @@ const dur       STIMULUS_DURATION               = 10s;
 
 // Duration of the response interval. A value of 0ms means there is no
 // timeout.
-const dur       RESPONSE_DURATION               = 5000ms;       // auto-paced
-//const dur       RESPONSE_DURATION               = 0ms;          // self-paced
+const dur       RESPONSE_DURATION               = 0ms;          // self-paced
