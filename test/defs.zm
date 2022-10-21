@@ -17,12 +17,6 @@ HISTORY:
 // Duration of the interval between two trials.
 const dur       INTERTRIAL_INTERVAL             = 1000ms;
 
-// Duration of the fixation symbol presentation.
-const dur       FIXATION_DURATION               = 1000ms;
-
-// Duration of the stimulus presentation.
-const dur       STIMULUS_DURATION               = 10s;
-
 // Duration of the response interval. A value of 0ms means there is no
 // timeout.
 const dur       RESPONSE_DURATION               = 0ms;          // self-paced
