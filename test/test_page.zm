@@ -243,16 +243,16 @@ Page test_page
         response.clear();
 
 
-        time stimonset = layout.start_stimulus(tref);
+	// only count responses that arrive at least 2 seconds after
+	// the presentation of the stimulus/instruction page
+        time response_onset = layout.start_stimulus(tref) + 2s;
 
 
 	if (item.type == INSTRUCTION) {
-	    response.start(stimonset);
+	    response.start(response_onset);
 	}
 	else {
-	    // Response interval starts at stimulus onset. Timeout after
-	    // RESPONSE_DURATION unless this duration is 0s or less.
-	    response.start(stimonset, RESPONSE_DURATION);
+	    response.start(response_onset + 2s, RESPONSE_DURATION);
 	}
 
 
