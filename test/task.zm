@@ -47,6 +47,7 @@ import test_page;
 TestItem[] instruction_items;
 TestItem[] prac_items;
 TestItem[] test_items;
+string phase_name;
 
 Block task
 {
@@ -174,9 +175,13 @@ Block task
             {
                 item = test_items[test.cycle];
 
-		string fn = dir + "ses-" +
-		    format(expdb.session.id, 4) + "-" +
-		    format(item.id, 4) + "-test.wav";
+		string filename = token(item.imgfn, "/", 1); // remove parent dir
+		string stim = token(filename, ".", 0);  // remove image file extension
+		string fn = dir + "ses_" +
+		    format(expdb.session.id, 4) + "_" +
+		    phase_name + "_" +
+		    expdb.participant.id + "_" +
+		    stim + ".wav";
 		sound_capture.rec(fn, reference_time, 0s);
 
                 test_page.action(this, item, reference_time, test.cycle);
@@ -218,11 +223,13 @@ void action(Part caller, int phase)
 	instruction_items = namen_instructions;
 	prac_items = namen_prac_items;
 	test_items = namen_test_items;
+	phase_name = "namen";
     }
     else {
 	instruction_items = zinnen_instructions;
 	prac_items = zinnen_prac_items;
 	test_items = zinnen_test_items;
+	phase_name = "zinnen";
     }
 
     task.enter(caller);
