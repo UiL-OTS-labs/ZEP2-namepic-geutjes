@@ -157,7 +157,7 @@ Block task
             test_page.setup(num_cycles, false);
 
             // Create folder for audio recordings
-	    dir = data_dir() + script_name() + "/";
+	    dir = data_dir() + script_name() + "/" + expdb.participant.id + "/";
 	    if (!file_exists(dir)) create_dir_tree(dir);
         }
 
