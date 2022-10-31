@@ -170,7 +170,12 @@ Page test_page
 
         on_event:finish()
         {
-            done(CONTINUE);
+	    if (response_timer.is_expired) {
+		done(CONTINUE);
+	    }
+	    else {
+		has_responded = true;
+	    }
         }
     }
 
@@ -189,6 +194,17 @@ Page test_page
     }
 
 
+    bool has_responded;
+    Timer response_timer
+    {
+	on_event:expire()
+	{
+	    if (has_responded)
+	    {
+		done(CONTINUE);
+	    }
+	}
+    }
     //==========================================================================
 
 
@@ -247,17 +263,17 @@ Page test_page
         response.clear();
 
 
-	// only count responses that arrive at least 2 seconds after
-	// the presentation of the stimulus/instruction page
-        time response_onset = layout.start_stimulus(tref) + 2s;
+        time response_onset = layout.start_stimulus(tref);
+	response.start(response_onset);
 
+	response_timer.abort();
+	has_responded = false;
 
-	if (item.type == INSTRUCTION) {
-	    response.start(response_onset);
-	}
-	else {
-	    response.start(response_onset + 2s, RESPONSE_DURATION);
-	}
+	// Each item should display for at least 2 seconds.
+	// If the participant responds before 2s have passed, that response is still
+	// taken into account, and the next trial will begin as soon as the 2s have passed.
+	// If the participant responds after the first 2s, the next trial will start immediately.
+	response_timer.start(response_onset + 2s);
 
 
         // Update progress counter (if enabled).
