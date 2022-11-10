@@ -28,7 +28,7 @@ import std_entry_page1;
 import std_exit_page1;
 import std_pause_page;
 import std_blank_page;
-//import io_beexybox;         // Enable to use BeexyBox response box.
+import io_beexybox;         // Enable to use BeexyBox response box.
 //import io_spp;              // Enable to use SPP based response box.
 
 import test::task;

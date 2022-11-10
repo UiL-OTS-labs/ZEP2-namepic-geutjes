@@ -226,7 +226,9 @@ Page test_page
         control.disable_buttons();
         control.disable_keys();
         control.enable_all_buttons();
-//        control.enable_button(BUTTON_?);
+        control.enable_button(BUTTON_0);
+        control.enable_button(BUTTON_1);
+        control.enable_button(BUTTON_2);
         control.enable_key(KEY_Return);
         control.enable_key(' ');
     }
