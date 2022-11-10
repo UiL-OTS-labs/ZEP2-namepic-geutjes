@@ -180,7 +180,9 @@ Block task
 		    format(expdb.session.id, 4) + "_" +
 		    phase_name + "_" +
 		    expdb.participant.id + "_" +
-		    stim + ".wav";
+		    stim + "_" +
+		    format((test.cycle + 1), 4) +
+		    ".wav";
 		sound_capture.rec(fn, reference_time, 0s);
 
                 test_page.action(this, item, reference_time, test.cycle);
