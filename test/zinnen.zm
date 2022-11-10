@@ -7,6 +7,7 @@ TestItem[] zinnen_instructions =
     {5, INSTRUCTION, NC, "instructie_zinnen/5.png"},
     {6, INSTRUCTION, NC, "instructie_zinnen/6.png"},
     {7, INSTRUCTION, NC, "instructie_zinnen/7.png"},
+    {8, INSTRUCTION, NC, "instructie_zinnen/8.png"}, 
 }
 
 TestItem[] zinnen_prac_items =
@@ -18,6 +19,12 @@ TestItem[] zinnen_prac_items =
     {5, FILLER, NC, "oefenopgaven_zinnen/5.png"},
     {6, FILLER, NC, "oefenopgaven_zinnen/6.png"},
     {7, FILLER, NC, "oefenopgaven_zinnen/7.png"},
+    {8, FILLER, NC, "oefenopgaven_zinnen/8.png"},
+    {9, FILLER, NC, "oefenopgaven_zinnen/9.png"},
+    {10, FILLER, NC, "oefenopgaven_zinnen/10.png"},
+    {11, FILLER, NC, "oefenopgaven_zinnen/11.png"},
+    {12, FILLER, NC, "oefenopgaven_zinnen/12.png"},
+    {13, FILLER, NC, "oefenopgaven_zinnen/13.png"}, 
 }
 
 TestItem[] zinnen_test_items =

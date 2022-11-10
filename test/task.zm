@@ -127,12 +127,11 @@ Block task
         on_event:entry()
         {
             pause_page.set_text(
-                "End of the practice part.\n"
+                "Einde oefenopgaven.\n"
                 "\n"
-                "If you have any questions at this moment please ask the "
-                "experimenter now.\n"
+                "Wacht op instructie van de experimentleider."
                 "\n"
-                "<i>Hit Enter when ready to proceed.</i>",
+                ,
                 true);
 
             pause_page.action(this);

@@ -62,7 +62,10 @@ Experiment experiment
     {
         on_event:entry()
         {
-            entry_page.set_text(WELCOME_TEXT);
+            entry_page.set_text(
+            "Welkom \n"
+            "\n"
+             "Deel 1 experiment 'Teambal'");
             entry_page.action(this, 0s);
         }
     }
@@ -86,7 +89,8 @@ Experiment experiment
         on_event:entry()
         {
             pause_page.set_text(
-                "<i>Hit Enter when ready to proceed.</i>",
+                "<i>Pauze. Wacht op instructie van de experimentleider" 
+                " voor je doorgaat met deel 2.</i>",
                 true);
 
             pause_page.action(this);
@@ -113,7 +117,7 @@ Experiment experiment
         {
             control.end_experiment();   // Check-in session.
 
-            exit_page.set_text(THANK_YOU_TEXT);
+            exit_page.set_text("Einde experiment. Dank je wel!");
             exit_page.action(this, 10s);
         }
     }
