@@ -28,7 +28,7 @@ import std_entry_page1;
 import std_exit_page1;
 import std_pause_page;
 import std_blank_page;
-//import io_beexybox;         // Enable to use BeexyBox response box.
+import io_beexybox;         // Enable to use BeexyBox response box.
 //import io_spp;              // Enable to use SPP based response box.
 
 import test::task;
@@ -62,7 +62,10 @@ Experiment experiment
     {
         on_event:entry()
         {
-            entry_page.set_text(WELCOME_TEXT);
+            entry_page.set_text(
+            "Welkom \n"
+            "\n"
+             "Deel 1 experiment 'Teambal'");
             entry_page.action(this, 0s);
         }
     }
@@ -72,7 +75,38 @@ Experiment experiment
     {
         on_event:entry()
         {
-            test::action(this);
+	    if (selected_group == LIST1) {
+		test::action(this, 0);
+	    }
+	    else {
+		test::action(this, 1);
+	    }
+        }
+    }
+
+    Part pause
+    {
+        on_event:entry()
+        {
+            pause_page.set_text(
+                "<i>Pauze. Wacht op instructie van de experimentleider" 
+                " voor je doorgaat met deel 2.</i>",
+                true);
+
+            pause_page.action(this);
+        }
+    }
+
+    Part phase2
+    {
+        on_event:entry()
+        {
+	    if (selected_group == LIST1) {
+		test::action(this, 1);
+	    }
+	    else {
+		test::action(this, 0);
+	    }
         }
     }
 
@@ -83,7 +117,7 @@ Experiment experiment
         {
             control.end_experiment();   // Check-in session.
 
-            exit_page.set_text(THANK_YOU_TEXT);
+            exit_page.set_text("Einde experiment. Dank je wel!");
             exit_page.action(this, 10s);
         }
     }

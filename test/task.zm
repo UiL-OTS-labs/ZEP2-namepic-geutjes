@@ -35,36 +35,51 @@ import std_sound_capture;
 
 import defs;
 import stimuli;
+
+import namen;
+import zinnen;
+
 import shuffle;
 import output;
 import test_page;
 
 
+TestItem[] instruction_items;
+TestItem[] prac_items;
+TestItem[] test_items;
+string phase_name;
+
 Block task
 {
-    Part instructions
+    Block instructions
     {
+        TestItem        item;   // current item
+
+
         on_event:entry()
         {
-//            pause_page.set_text_size(1000, 600);
-            pause_page.set_text(
-                "<b>Dear participant,</b>\n"
-                "\n"
-                "Thank you for participating in this experiment.\n"
-                "\n"
-                "You are now going to see pictures on the screen, one after "
-                "the other. Your task is to name each pictured object as "
-                "quickly as possible. Try to make no mistakes.\n"
-                "\n"
-                "First we will do a short practice.\n"
-                "\n"
-                "<i>Hit Enter when ready to start.</i>",
-                true);
+            num_cycles = instruction_items.size;
 
-            pause_page.action(this);
+            // Prepare test page: progress bar and prompt enabled.
+            test_page.setup(num_cycles, false);
+        }
+
+
+        on_event:exit()
+        {
+            test_page.cleanup();
+        }
+
+
+        Trial trial
+        {
+            on_event:entry()
+            {
+                item = instruction_items[instructions.cycle];
+                test_page.action(this, item, reference_time, instructions.cycle);
+            }
         }
     }
-
 
     Block practice
     {
@@ -76,22 +91,12 @@ Block task
             num_cycles = prac_items.size;
 
             // Prepare test page: progress bar and prompt enabled.
-            test_page.setup(num_cycles, true);
-
-            // Create folder for audio recordings and start recording in 100ms.
-//            string dir = data_dir() + script_name() + "/";
-//            if (!file_exists(dir)) create_dir_tree(dir);
-//            string fn = dir + "ses-" +
-//                format(expdb.session.id, 4) + "-prac.wav";
-//            sound_capture.rec(fn, reference_time + 100ms, 0s);
+            test_page.setup(num_cycles, false);
         }
 
 
         on_event:exit()
         {
-            // Stop audio recording.
-//            sound_capture.abort();
-
             test_page.cleanup();
         }
 
@@ -122,51 +127,43 @@ Block task
         on_event:entry()
         {
             pause_page.set_text(
-                "End of the practice part.\n"
+                "Einde oefenopgaven.\n"
                 "\n"
-                "If you have any questions at this moment please ask the "
-                "experimenter now.\n"
+                "Wacht op instructie van de experimentleider."
                 "\n"
-                "<i>Hit Enter when ready to proceed.</i>",
+                ,
                 true);
 
             pause_page.action(this);
         }
     }
 
-
     Block test
     {
         TestItem        item;   // current item
+	string 		dir;
 
 
         on_event:entry()
         {
             // Randomize test item table.
-            if (shuffle_test_items() != OK) terminate;
+            if (shuffle_test_items(test_items) != OK) terminate;
 
             num_cycles = test_items.size;
-//            num_cycles = 3;
+           /* num_cycles = 3; */
 
             // Prepare test page: progress bar enabled, prompt disabled.
             test_page.setup(num_cycles, false);
 
-            // Create folder for audio recordings and start recording in 100ms.
-            string dir = data_dir() + script_name() + "/";
-            if (!file_exists(dir)) create_dir_tree(dir);
-            string fn = dir + "ses-" +
-                format(expdb.session.id, 4) + "-test.wav";
-            sound_capture.rec(fn, reference_time + 100ms, 0s);
+            // Create folder for audio recordings
+	    dir = data_dir() + script_name() + "/" + expdb.participant.id + "/";
+	    if (!file_exists(dir)) create_dir_tree(dir);
         }
 
 
         on_event:exit()
         {
-            // Stop audio recording.
-            sound_capture.abort();
-
             test_page.cleanup();
-
             save_trial_data();
         }
 
@@ -177,12 +174,25 @@ Block task
             {
                 item = test_items[test.cycle];
 
+		string filename = token(item.imgfn, "/", 1); // remove parent dir
+		string stim = token(filename, ".", 0);  // remove image file extension
+		string fn = dir + "ses_" +
+		    format(expdb.session.id, 4) + "_" +
+		    phase_name + "_" +
+		    expdb.participant.id + "_" +
+		    stim + "_" +
+		    format((test.cycle + 1), 4) +
+		    ".wav";
+		sound_capture.rec(fn, reference_time, 0s);
+
                 test_page.action(this, item, reference_time, test.cycle);
             }
 
 
             on_event:exit()
             {
+		// Stop audio recording.
+		sound_capture.abort();
                 // Add new row to test output table.
                 TestOutput output;
                 output.trialnum = test.cycle + 1;
@@ -205,9 +215,23 @@ Block task
 }
 
 
-void action(Part caller)
+void action(Part caller, int phase)
 {
     // Activate the task. When the task is done, the registered caller
     // (c.q. the main experiment object) will automatically be signalled.
+
+    if (phase == 0) {
+	instruction_items = namen_instructions;
+	prac_items = namen_prac_items;
+	test_items = namen_test_items;
+	phase_name = "namen";
+    }
+    else {
+	instruction_items = zinnen_instructions;
+	prac_items = zinnen_prac_items;
+	test_items = zinnen_test_items;
+	phase_name = "zinnen";
+    }
+
     task.enter(caller);
 }
